@@ -5,7 +5,7 @@ import random
 import math
 from PIL import Image
 
-st.set_page_config(page_title="Code Combinator & GCD Master", layout="centered")
+st.set_page_config(page_title="LCM Hero", layout="centered")
 
 char_pools = {
     'lowercase': 26,
@@ -31,7 +31,7 @@ if "score" not in st.session_state:
 # Sidebar with QR code
 st.sidebar.header("Open this app on your mobile device")
 
-qr_link = "https://puzzle-hero.streamlit.app"
+qr_link = "https://lcm-hero.streamlit.app"
 qr = qrcode.make(qr_link)
 buf = io.BytesIO()
 qr.save(buf)
@@ -69,25 +69,21 @@ def generate_combination_problem():
         "formula_parts": formula_parts
     }
 
-# --- GCD Problem Generator (Fixed Version) ---
-def generate_gcd_problem():
-    gcd_val = random.randint(2, 15)
+# --- LCM Problem Generator (Listing Method-Friendly) ---
+def generate_lcm_problem():
+    a = random.randint(2, 10)
+    b = random.randint(2, 10)
+    while a == b:
+        b = random.randint(2, 10)
 
-    # Ensure m and n are co-prime
-    while True:
-        m = random.randint(2, 10)
-        n = random.randint(2, 10)
-        if math.gcd(m, n) == 1:
-            break
-
-    a = gcd_val * m
-    b = gcd_val * n
+    def lcm(x, y):
+        return abs(x * y) // math.gcd(x, y)
 
     return {
-        "type": "gcd",
+        "type": "lcm",
         "a": a,
         "b": b,
-        "gcd": gcd_val
+        "lcm": lcm(a, b)
     }
 
 # --- Generate New Problem based on score ---
@@ -95,7 +91,7 @@ def generate_problem():
     if st.session_state.score < 5:
         return generate_combination_problem()
     else:
-        return generate_gcd_problem()
+        return generate_lcm_problem()
 
 # --- Normalize function ---
 def normalize_formula(s):
@@ -179,18 +175,19 @@ if problem["type"] == "combination":
                 st.session_state.user_answer = ""
                 st.rerun()
 
-elif problem["type"] == "gcd":
-    st.markdown("### Find the GCD (Greatest Common Divisor):")
-    st.markdown(f"**What is the GCD of {problem['a']} and {problem['b']}?**")
+elif problem["type"] == "lcm":
+    st.markdown("### Find the LCM (Least Common Multiple):")
+    st.markdown(f"**What is the LCM of {problem['a']} and {problem['b']}?**")
+    st.markdown("💡 *Tip: List the multiples of each number and find the smallest common one.*")
 
     if not st.session_state.submitted:
-        with st.form("gcd_form"):
-            user_input = st.text_input("👉 Enter the GCD:", key="gcd_input")
+        with st.form("lcm_form"):
+            user_input = st.text_input("👉 Enter the LCM:", key="lcm_input")
             submit = st.form_submit_button("✅ Submit")
 
             if submit:
                 st.session_state.user_answer = user_input.strip()
-                st.session_state.correct = (user_input.strip() == str(problem["gcd"]))
+                st.session_state.correct = (user_input.strip() == str(problem["lcm"]))
                 st.session_state.submitted = True
                 st.rerun()
     else:
@@ -206,7 +203,7 @@ elif problem["type"] == "gcd":
                 st.rerun()
         else:
             st.error("❌ Incorrect.")
-            st.markdown(f"**Correct answer:** {problem['gcd']}")
+            st.markdown(f"**Correct answer:** {problem['lcm']}")
             if st.button("➡️ Try New Problem"):
                 st.session_state.problem = generate_problem()
                 st.session_state.submitted = False
