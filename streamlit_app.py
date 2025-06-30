@@ -71,10 +71,11 @@ def generate_combination_problem():
 
 # --- LCM Problem Generator (Listing Method-Friendly) ---
 def generate_lcm_problem():
-    a = random.randint(2, 10)
-    b = random.randint(2, 10)
-    while a == b:
-        b = random.randint(2, 10)
+    while True:
+        a = random.randint(3, 10)
+        b = random.randint(5, 12)
+        if a != b:
+            break
 
     def lcm(x, y):
         return abs(x * y) // math.gcd(x, y)
