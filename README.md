@@ -68,13 +68,18 @@ LCM Hero challenges students to solve math problems related to combinations and 
 ├── level1.webp          # Puzzle Adept rank image
 ├── level2.webp          # Master of Numbers rank image
 └── 3char.png            # Image representing 3-character codes
+├── 4char.png            # Image representing 4-character codes
+└── 5char.png            # Image representing 5-character codes
 ```
+---
 
 ## Future Improvements
 
 - Add more levels and problems to challenge users.
 - Track historical performance and show user progress over time.
 - Improve UI with animations and dynamic feedback.
+
+---
 
 ## License
 
